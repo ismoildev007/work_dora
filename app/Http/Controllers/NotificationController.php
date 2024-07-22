@@ -3,64 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use App\Http\Requests\StoreNotificationRequest;
-use App\Http\Requests\UpdateNotificationRequest;
+use App\Models\User;
+use App\Models\Work;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $notifications = Notification::with(['user', 'work'])->get();
+        return view('admin.notification.index', compact('notifications'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $users = User::all();
+        $works = Work::all();
+        return view('admin.notification.create', compact('users', 'works'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreNotificationRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'status_id' => 'required|exists:statuses,id',
+            'work_id' => 'required|exists:works,id',
+            'massage' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'image' => 'nullable|string|max:255',
+        ]);
+
+        Notification::create($validatedData);
+
+        return redirect()->route('notifications.index')->with('success', 'Notification created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Notification $notification)
     {
-        //
+        return view('admin.notification.show', compact('notification'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Notification $notification)
     {
-        //
+        $users = User::all();
+        $works = Work::all();
+        return view('admin.notification.edit', compact('notification', 'users', 'works'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNotificationRequest $request, Notification $notification)
+    public function update(Request $request, Notification $notification)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'status_id' => 'required|exists:statuses,id',
+            'work_id' => 'required|exists:works,id',
+            'massage' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'image' => 'nullable|string|max:255',
+        ]);
+
+        $notification->update($validatedData);
+
+        return redirect()->route('notifications.index')->with('success', 'Notification updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Notification $notification)
     {
-        //
+        $notification->delete();
+
+        return redirect()->route('notifications.index')->with('success', 'Notification deleted successfully.');
     }
 }

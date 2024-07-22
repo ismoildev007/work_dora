@@ -3,64 +3,77 @@
 namespace App\Http\Controllers;
 
 use App\Models\Work;
-use App\Http\Requests\StoreWorkRequest;
-use App\Http\Requests\UpdateWorkRequest;
+use App\Models\Project;
+use App\Models\Manager;
+use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $works = Work::with(['project', 'manager'])->get();
+        return view('admin.work.index', compact('works'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $projects = Project::all();
+        $managers = Manager::all();
+        return view('admin.work.create', compact('projects', 'managers'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreWorkRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'status_id' => 'required|exists:statuses,id',
+            'manager_id' => 'required|exists:managers,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'deadline' => 'required|date',
+            'image' => 'nullable|string|max:255',
+            'images' => 'nullable|string',
+        ]);
+
+        Work::create($validatedData);
+
+        return redirect()->route('works.index')->with('success', 'Work created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Work $work)
     {
-        //
+        return view('admin.work.show', compact('work'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Work $work)
     {
-        //
+        $projects = Project::all();
+        $managers = Manager::all();
+        return view('admin.work.edit', compact('work', 'projects', 'managers'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateWorkRequest $request, Work $work)
+    public function update(Request $request, Work $work)
     {
-        //
+        $validatedData = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'status_id' => 'required|exists:statuses,id',
+            'manager_id' => 'required|exists:managers,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'deadline' => 'required|date',
+            'image' => 'nullable|string|max:255',
+            'images' => 'nullable|string',
+        ]);
+
+        $work->update($validatedData);
+
+        return redirect()->route('works.index')->with('success', 'Work updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Work $work)
     {
-        //
+        $work->delete();
+
+        return redirect()->route('works.index')->with('success', 'Work deleted successfully.');
     }
 }

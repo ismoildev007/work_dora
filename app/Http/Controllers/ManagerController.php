@@ -3,64 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manager;
-use App\Http\Requests\StoreManagerRequest;
-use App\Http\Requests\UpdateManagerRequest;
+use App\Models\Status;
+use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $managers = Manager::all();
+        return view('admin.manager.index', compact('managers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.manager.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreManagerRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|string|max:255',
+            'status_id' => 'required|exists:statuses,id',
+        ]);
+
+        Manager::create($validatedData);
+
+        return redirect()->route('managers.index')->with('success', 'Manager created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Manager $manager)
     {
-        //
+        return view('admin.manager.show', compact('manager'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Manager $manager)
     {
-        //
+        $statuses = Status::all();
+        return view('admin.manager.edit', compact('manager', 'statuses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateManagerRequest $request, Manager $manager)
+    public function update(Request $request, Manager $manager)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|string|max:255',
+            'status_id' => 'required|exists:statuses,id',
+        ]);
+
+        $manager->update($validatedData);
+
+        return redirect()->route('managers.index')->with('success', 'Manager updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Manager $manager)
     {
-        //
+        $manager->delete();
+
+        return redirect()->route('managers.index')->with('success', 'Manager deleted successfully.');
     }
 }

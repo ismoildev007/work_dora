@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Models\Client;
 use App\Http\Requests\StoreClientRequest;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.pdf');
+    }
     public function index()
     {
         $clients = Client::all();

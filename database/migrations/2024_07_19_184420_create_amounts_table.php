@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('amounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete();
             $table->decimal('profit', 10, 2);
             $table->decimal('outlay', 10, 2);
             $table->timestamps();

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('manager_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status');
             $table->date('deadline')->nullable();
             $table->string('image')->nullable();
             $table->text('images')->nullable();

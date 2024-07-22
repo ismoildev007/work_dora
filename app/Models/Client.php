@@ -13,10 +13,16 @@ class Client extends Model
 
     protected $fillable = [
         'name',
+        'status_id',
         'phone_number',
         'website',
         'address',
     ];
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 
     public function project()
     {

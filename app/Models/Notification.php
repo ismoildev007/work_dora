@@ -14,8 +14,8 @@ class Notification extends Model
     protected $fillable = [
         'user_id',
         'work_id',
+        'status_id',
         'massage',
-        'status',
         'type',
         'content',
         'image',
@@ -24,6 +24,10 @@ class Notification extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
     public function work()

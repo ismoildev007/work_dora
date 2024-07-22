@@ -2,16 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Status;
 
 class StatusSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        //
+        Status::create([
+            'name' => 'Pending',
+            'color' => 'Yellow',
+        ]);
+
+        Status::create([
+            'name' => 'In Progress',
+            'color' => 'Blue',
+        ]);
+
+        Status::create([
+            'name' => 'Completed',
+            'color' => 'Green',
+        ]);
     }
 }

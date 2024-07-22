@@ -13,7 +13,7 @@ class AmountPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return auth()->user()->hasRole('admin') || $user->hasPermissionTo('read-amounts');
     }
 
     /**

@@ -14,9 +14,9 @@ class Work extends Model
     protected $fillable = [
         'project_id',
         'manager_id',
+        'status_id',
         'title',
         'description',
-        'status',
         'deadline',
         'image',
         'images',
@@ -30,6 +30,10 @@ class Work extends Model
     public function manager()
     {
         return $this->belongsTo(Manager::class);
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
     public function work_employees()

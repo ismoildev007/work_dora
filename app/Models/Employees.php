@@ -14,17 +14,21 @@ class Employees extends Model
     protected $fillable = [
         'user_id',
         'department_id',
+        'status_id',
         'role',
-        'status',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
     public function department()
     {
-        $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 
     public function work_employees()

@@ -12,9 +12,9 @@ class Project extends Model
     protected $fillable = [
         'client_id',
         'department_id',
+        'status_id',
         'title',
         'description',
-        'status',
         'image',
         'images',
     ];
@@ -22,6 +22,10 @@ class Project extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
     public function department()

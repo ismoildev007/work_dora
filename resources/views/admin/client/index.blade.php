@@ -3,6 +3,7 @@
 @section('content')
     <div class="container">
         <h1>Clients</h1>
+        <a href="/users/export" class="btn btn-primary">yuklash</a>
         <a href="{{ route('clients.create') }}" class="btn btn-primary">Create Client</a>
         <table class="table">
             <thead>

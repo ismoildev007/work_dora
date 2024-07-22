@@ -3,64 +3,64 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Http\Requests\StoreDepartmentRequest;
-use App\Http\Requests\UpdateDepartmentRequest;
+use App\Models\Status;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $departments = Department::all();
+        return view('admin.department.index', compact('departments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $statuses = Status::all();
+        return view('admin.department.create', compact('statuses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDepartmentRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'status_id' => 'required|exists:statuses,id',
+        ]);
+
+        Department::create($validatedData);
+
+        return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Department $department)
     {
-        //
+        return view('admin.department.show', compact('department'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Department $department)
     {
-        //
+        $statuses = Status::all();
+        return view('admin.department.edit', compact('department', 'statuses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDepartmentRequest $request, Department $department)
+    public function update(Request $request, Department $department)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'status_id' => 'required|exists:statuses,id',
+        ]);
+
+        $department->update($validatedData);
+
+        return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
+
+        return redirect()->back();
     }
 }

@@ -66,7 +66,7 @@
 <div class="layout-wrapper">
     <x-superheader></x-superheader>
     <div class="px-3">
-        {{ $slot }}
+        @yield('content')
     </div>
     <x-superfooter></x-superfooter>
 </div>

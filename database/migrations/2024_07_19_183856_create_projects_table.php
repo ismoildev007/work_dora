@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status');
             $table->string('image')->nullable();
             $table->text('images')->nullable();
             $table->timestamps();

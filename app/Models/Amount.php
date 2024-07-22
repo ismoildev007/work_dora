@@ -13,6 +13,7 @@ class Amount extends Model
 
     protected $fillable = [
         'project_id',
+        'status_id',
         'profit',
         'outlay',
     ];
@@ -20,5 +21,9 @@ class Amount extends Model
     public function project()
     {
         $this->belongsTo(Project::class);
+    }
+    public function status()
+    {
+        $this->belongsTo(Status::class);
     }
 }

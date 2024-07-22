@@ -2,65 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employees;
-use App\Http\Requests\StoreEmployeesRequest;
-use App\Http\Requests\UpdateEmployeesRequest;
+use App\Models\Status;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $employees = Employees::all();
+        return view('admin.employee.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $users = User::all();
+        $departments = Department::all();
+        $statuses = Status::all();
+        return view('admin.employee.create', compact('users','departments', 'statuses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEmployeesRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'nullable|exists:users,id',
+            'status_id' => 'required|exists:statuses,id',
+            'department_id' => 'nullable|exists:departments,id',
+            'role' => 'required|string|max:255',
+        ]);
+
+        Employees::create($validatedData);
+
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employees $employees)
+    public function show(Employees $employee)
     {
-        //
+        return view('admin.employee.show', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Employees $employees)
+    public function edit(Employees $employee)
     {
-        //
+        $statuses = Status::all();
+        return view('admin.employee.edit', compact('employee', 'statuses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEmployeesRequest $request, Employees $employees)
+    public function update(Request $request, Employees $employee)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => 'nullable|exists:users,id',
+            'status_id' => 'required|exists:statuses,id',
+            'department_id' => 'nullable|exists:departments,id',
+            'role' => 'required|string|max:255',
+        ]);
+
+        $employee->update($validatedData);
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Employees $employees)
+    public function destroy(Employees $employee)
     {
-        //
+        $employee->delete();
+
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
 }

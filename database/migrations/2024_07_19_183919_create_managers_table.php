@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('statuses')->cascadeOnDelete();
             $table->string('role');
-            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

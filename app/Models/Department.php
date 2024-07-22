@@ -13,8 +13,14 @@ class Department extends Model
 
     protected $fillable = [
         'name',
+        'status_id',
         'phone_number',
     ];
+
+    public function status()
+    {
+        $this->belongsTo(Status::class, 'id', 'status_id');
+    }
 
     public function employees()
     {
