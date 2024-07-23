@@ -19,16 +19,16 @@ class Department extends Model
 
     public function status()
     {
-        $this->belongsTo(Status::class, 'id', 'status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function employees()
     {
-        $this->hasMany(Employees::class);
+        return $this->hasMany(Employees::class);
     }
 
-    public function project()
+    public function projects()
     {
-        $this->hasMany(Project::class);
+        return $this->hasMany(Project::class);
     }
 }

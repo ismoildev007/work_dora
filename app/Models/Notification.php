@@ -15,7 +15,7 @@ class Notification extends Model
         'user_id',
         'work_id',
         'status_id',
-        'massage',
+        'message',
         'type',
         'content',
         'image',

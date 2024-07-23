@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAmountRequest;
 use App\Models\Amount;
+use App\Models\Project;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class AmountController extends Controller
@@ -15,30 +17,50 @@ class AmountController extends Controller
 
     public function create()
     {
-        return view('admin.amount.create');
+        $projects = Project::all();
+        $statuses = Status::all();
+        return view('admin.amount.create', compact('projects', 'statuses'));
     }
 
-    public function store(StoreAmountRequest $request)
+    public function store(Request $request)
     {
-        Amount::create($request->validated());
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'status_id' => 'required|exists:statuses,id',
+            'profit' => 'required|numeric',
+            'outlay' => 'required|numeric',
+        ]);
+
+        Amount::create($request->all());
+
         return redirect()->route('amounts.index')->with('success', 'Amount created successfully.');
     }
 
     public function edit(Amount $amount)
     {
-        return view('admin.amount.edit', compact('amount'));
+        $projects = Project::all();
+        $statuses = Status::all();
+        return view('admin.amount.edit', compact('amount', 'projects', 'statuses'));
     }
 
-    public function update(StoreAmountRequest $request, Amount $amount)
+    public function update(Request $request, Amount $amount)
     {
-        $amount->update($request->validated());
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'status_id' => 'required|exists:statuses,id',
+            'profit' => 'required|numeric',
+            'outlay' => 'required|numeric',
+        ]);
+
+        $amount->update($request->all());
+
         return redirect()->route('amounts.index')->with('success', 'Amount updated successfully.');
     }
 
     public function destroy(Amount $amount)
     {
         $amount->delete();
-        return redirect()->back();
+
+        return redirect()->route('amounts.index')->with('success', 'Amount deleted successfully.');
     }
 }
-

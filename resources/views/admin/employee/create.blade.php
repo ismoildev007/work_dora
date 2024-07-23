@@ -3,11 +3,12 @@
 @section('content')
     <div class="container">
         <h1>Create Employee</h1>
+
         <form action="{{ route('employees.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="user_id">User</label>
-                <select class="form-control" id="user_id" name="user_id" required>
+                <select name="user_id" id="user_id" class="form-control" required>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
@@ -15,19 +16,23 @@
             </div>
             <div class="form-group">
                 <label for="department_id">Department</label>
-                <select class="form-control" id="department_id" name="department_id" required>
+                <select name="department_id" id="department_id" class="form-control" required>
                     @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="role">Role</label>
-                <input type="text" class="form-control" id="role" name="role" required>
+                <label for="status_id">Status</label>
+                <select name="status_id" id="status_id" class="form-control" required>
+                    @foreach($statuses as $status)
+                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
-                <label for="status">Status</label>
-                <input type="text" class="form-control" id="status" name="status" required>
+                <label for="role">Role</label>
+                <input type="text" name="role" id="role" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>

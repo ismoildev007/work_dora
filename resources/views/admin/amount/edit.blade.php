@@ -7,16 +7,28 @@
             @csrf
             @method('PUT')
             <div class="form-group">
-                <label for="project_id">Project ID</label>
-                <input type="text" class="form-control" id="project_id" name="project_id" value="{{ $amount->project_id }}" required>
+                <label for="project_id">Project</label>
+                <select name="project_id" id="project_id" class="form-control">
+                    @foreach($projects as $project)
+                        <option value="{{ $project->id }}" {{ $project->id == $amount->project_id ? 'selected' : '' }}>{{ $project->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status_id">Status</label>
+                <select name="status_id" id="status_id" class="form-control">
+                    @foreach($statuses as $status)
+                        <option value="{{ $status->id }}" {{ $status->id == $amount->status_id ? 'selected' : '' }}>{{ $status->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label for="profit">Profit</label>
-                <input type="text" class="form-control" id="profit" name="profit" value="{{ $amount->profit }}" required>
+                <input type="number" name="profit" id="profit" class="form-control" value="{{ $amount->profit }}">
             </div>
             <div class="form-group">
                 <label for="outlay">Outlay</label>
-                <input type="text" class="form-control" id="outlay" name="outlay" value="{{ $amount->outlay }}" required>
+                <input type="number" name="outlay" id="outlay" class="form-control" value="{{ $amount->outlay }}">
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

@@ -25,6 +25,64 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+    public function user()
+    {
+        return view('auth.user');
+    }
+    public function manager()
+    {
+        return view('auth.manager');
+    }
+    public function user_authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $role = Auth::user()->permissions->role ?? 2; // Ruxsatlar rolini olish
+
+            if ($role === \App\Helpers\MainHelper::ROLE_USER) {
+                return redirect()->intended('/user/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_ADMIN) {
+                return redirect()->intended('/admin/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_MANAGER) {
+                return redirect()->intended('/manager/notifications');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+    public function manager_authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $role = Auth::user()->permissions->role ?? 1; // Ruxsatlar rolini olish
+
+            if ($role === \App\Helpers\MainHelper::ROLE_MANAGER) {
+                return redirect()->intended('/manager/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_ADMIN) {
+                return redirect()->intended('/admin/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_USER) {
+                return redirect()->intended('/user/notifications');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
@@ -35,14 +93,21 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin');
+            $role = Auth::user()->permissions->role ?? 0; // Ruxsatlar rolini olish
+
+            if ($role === \App\Helpers\MainHelper::ROLE_ADMIN) {
+                return redirect()->intended('/admin/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_MANAGER) {
+                return redirect()->intended('/manager/notifications');
+            } elseif ($role === \App\Helpers\MainHelper::ROLE_USER) {
+                return redirect()->intended('/user/notifications');
+            }
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
-
 
     public function logout(Request $request)
     {

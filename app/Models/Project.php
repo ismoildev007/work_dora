@@ -23,6 +23,7 @@ class Project extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
     public function status()
     {
         return $this->belongsTo(Status::class);
@@ -30,6 +31,6 @@ class Project extends Model
 
     public function department()
     {
-        $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class);
     }
 }

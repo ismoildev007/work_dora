@@ -22,20 +22,15 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
             'status_id' => 'required|exists:statuses,id',
+            'phone_number' => 'nullable|string|max:20',
         ]);
 
-        Department::create($validatedData);
+        Department::create($request->all());
 
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
-    }
-
-    public function show(Department $department)
-    {
-        return view('admin.department.show', compact('department'));
     }
 
     public function edit(Department $department)
@@ -46,13 +41,13 @@ class DepartmentController extends Controller
 
     public function update(Request $request, Department $department)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
             'status_id' => 'required|exists:statuses,id',
+            'phone_number' => 'nullable|string|max:20',
         ]);
 
-        $department->update($validatedData);
+        $department->update($request->all());
 
         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
@@ -60,7 +55,6 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         $department->delete();
-
-        return redirect()->back();
+        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
     }
 }

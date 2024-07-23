@@ -20,10 +20,12 @@ class Amount extends Model
 
     public function project()
     {
-        $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class);
     }
+
     public function status()
     {
-        $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class);
     }
 }
+

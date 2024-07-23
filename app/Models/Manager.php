@@ -9,17 +9,18 @@ class Manager extends Model
 {
     use HasFactory;
 
-    protected $table = 'employees';
+    protected $table = 'managers';
 
     protected $fillable = [
         'user_id',
         'status_id',
+        'role_id',
         'role',
     ];
 
-    public function user()
+    public function permission()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Permission::class);
     }
     public function status()
     {

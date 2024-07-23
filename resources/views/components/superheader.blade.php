@@ -73,53 +73,77 @@
 {{--                        </div>--}}
 {{--                </li>--}}
             
+            @can('view-client')
                 <li class="menu-item">
-                        <a href="{{ route('clients.index') }}" class="menu-link waves-effect waves-light">
-                            <span class="menu-icon"><i class="bx bx-calendar"></i></span>
-                            <span class="menu-text"> Clients </span>
-                        </a>
+                    <a href="{{ route('clients.index') }}" class="menu-link waves-effect waves-light">
+                        <span class="menu-icon"><i class="bx bx-calendar"></i></span>
+                        <span class="menu-text"> Clients </span>
+                    </a>
                 </li>
+            @endcan
+            @can('view-amount')
             <li class="menu-item">
                 <a href="{{ route('amounts.index') }}" class="menu-link">
                     <span class="menu-text">Amount</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="{{ route('departments.index') }}" class="menu-link">
-                    <span class="menu-text">Deaprtment</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('employees.index') }}" class="menu-link">
-                    <span class="menu-text">Employees</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('managers.index') }}" class="menu-link">
-                    <span class="menu-text">Manager</span>
-                </a>
-            </li>
+            @endcan
+            @can('view-department')
+                <li class="menu-item">
+                    <a href="{{ route('departments.index') }}" class="menu-link">
+                        <span class="menu-text">Deaprtment</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-employee')
+                <li class="menu-item">
+                    <a href="{{ route('employees.index') }}" class="menu-link">
+                        <span class="menu-text">Employees</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-manager')
+                <li class="menu-item">
+                    <a href="{{ route('managers.index') }}" class="menu-link">
+                        <span class="menu-text">Manager</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-notification')
             <li class="menu-item">
                 <a href="{{ route('notifications.index') }}" class="menu-link">
                     <span class="menu-text">Notifications</span>
                 </a>
             </li>
+            @endcan
+            @can('view-project')
             <li class="menu-item">
                 <a href="{{ route('projects.index') }}" class="menu-link">
                     <span class="menu-text">Projects</span>
                 </a>
             </li>
+            @endcan
+            @can('view-status')
             <li class="menu-item">
                 <a href="{{ route('statuses.index') }}" class="menu-link">
                     <span class="menu-text">Status</span>
                 </a>
             </li>
+            @endcan
+            @can('view-work')
             <li class="menu-item">
                 <a href="{{ route('works.index') }}" class="menu-link">
                     <span class="menu-text">Work</span>
                 </a>
             </li>
-            
+            @endcan
+            <form method="post" action="{{ route('logout') }}">
+                <i class="fe-log-out"></i>
+                <span>
+                                    @csrf
+                                    <button class="btn">Chiqish</button>
+                                </span>
+            </form>
 {{--            @can('view-work-category')--}}
 {{--                <li class="menu-item">--}}
 {{--                        <div class="collapse" id="menuKassa">--}}
